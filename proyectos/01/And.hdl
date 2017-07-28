@@ -15,7 +15,6 @@ CHIP And {
 
     PARTS:    
     // Put your code here:
-    //Nand(inA=a,inB=b,out=NandAB);
-    //Nand(Ain=NandAB,Bin=NandAB,out=ABNand);
-    Nand(a=a,b=b,out=x));
+    Nand(a=a,b=b,out=x);
+    Nand(a=x,b=x,out=out);
 }
