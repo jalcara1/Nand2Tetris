@@ -3,16 +3,25 @@ import java.io.File;
 public class VMtranslator{
     public static void main(String args[]){
 	if(args.length != 1){
-	    Systme.out.println("Not input file\n Usage: java VMTranslator *.vm");
+	    System.out.println("Not input file\n Usage: java VMTranslator *.vm");
 	}else{
 	    File file =new File(args[0]);
 	    String pathFileOut =file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(".")) + ".asm";
-	    File fileOut =new File(fileOutPath);
+	    File fileOut =new File(pathFileOut);
+	    Writer writer = new Writer(fileOut);
 	    Parser parser =new Parser(file);
-	    while(parser.moreCommands){
-		
-	    }	    
-	    System.out.println("File Created: " + fileOutPath);
+	    int type = -1;
+	    while(parser.moreCommands()){
+		parser.advance();
+		type = parser.commandType();
+		if(type == Parser.ARITHMETIC){
+		    writer.arithmetic(parser.arg1());
+		}else if(type==Parser.POP || type==Parser.PUSH){
+		    writer.pushPop(type, parser.arg1(), parser.arg2());
+		}
+	    }
+	    writer.close();
+	    System.out.println("File Created: "+pathFileOut);
 	}
     }
 }
