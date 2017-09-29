@@ -14,69 +14,72 @@ public class Writer{
 	}
     }
     public void arithmetic(String command){
+	System.out.println("-->> " + command);
 	if (command.equals("add")){
 	    printerOutput.print(arithmeticTemplate1() + "M=M+D\n");
-	}else if (command.equals("sub")){
+	}else if(command.equals("sub")){
 	    printerOutput.print(arithmeticTemplate1() + "M=M-D\n");
-	}else if (command.equals("and")){
+	}else if(command.equals("and")){
 	    printerOutput.print(arithmeticTemplate1() + "M=M&D\n");
-	}else if (command.equals("or")){
+	}else if(command.equals("or")){
 	    printerOutput.print(arithmeticTemplate1() + "M=M|D\n");
-	}else if (command.equals("gt")){
+	}else if(command.equals("gt")){
 	    printerOutput.print(arithmeticTemplate2("JLE"));
 	    jumpFlags++;
-	}else if (command.equals("lt")){
+	}else if(command.equals("lt")){
 	    printerOutput.print(arithmeticTemplate2("JGE"));
 	    jumpFlags++;
-	}else if (command.equals("eq")){
+	}else if(command.equals("eq")){
 	    printerOutput.print(arithmeticTemplate2("JNE"));
 	    jumpFlags++;
-	}else if (command.equals("not")){
+	}else if(command.equals("not")){
 	    printerOutput.print("@SP\nA=M-1\nM=!M\n");
-	}else if (command.equals("neg")){
+	}else if(command.equals("neg")){
 	    printerOutput.print("D=0\n@SP\nA=M-1\nM=D-M\n");
-	}else {
+	}else{
+	    System.out.println("ERROR ERROR");
 	    throw new IllegalArgumentException("Call arithmetic() for a non-arithmetic command");
 	}
     }
     public void pushPop(int command, String segment, int index){
-	if (command == Parser.PUSH){
-	    if (segment.equals("constant")){
+	System.out.println(command+"--"+segment+"--"+index);
+	if(command ==Parser.PUSH){
+	    if(segment.equals("constant")){
 		printerOutput.print("@"+index+"\n"+"D=A\n@SP\nA=M\nM=D\n@SP\nM=M+1\n");
-	    }else if (segment.equals("local")){
+	    }else if(segment.equals("local")){
 		printerOutput.print(pushTemplate1("LCL",index,false));
-	    }else if (segment.equals("argument")){
+	    }else if(segment.equals("argument")){
 		printerOutput.print(pushTemplate1("ARG",index,false));
-	    }else if (segment.equals("this")){
+	    }else if(segment.equals("this")){
 		printerOutput.print(pushTemplate1("THIS",index,false));
-	    }else if (segment.equals("that")){
+	    }else if(segment.equals("that")){
 		printerOutput.print(pushTemplate1("THAT",index,false));
-	    }else if (segment.equals("temp")){
+	    }else if(segment.equals("temp")){
 		printerOutput.print(pushTemplate1("R5", index + 5,false));
-	    }else if (segment.equals("pointer") && index == 0){
+	    }else if(segment.equals("pointer") && index ==0){
 		printerOutput.print(pushTemplate1("THIS",index,true));
-	    }else if (segment.equals("pointer") && index == 1){
+	    }else if(segment.equals("pointer") && index ==1){
 		printerOutput.print(pushTemplate1("THAT",index,true));
-	    }else if (segment.equals("static")){
+	    }else if(segment.equals("static")){
 		printerOutput.print(pushTemplate1(String.valueOf(16 + index),index,true));
 	    }
-	}else if(command == Parser.POP){
-	    if (segment.equals("local")){
+	}else if(command ==Parser.POP){
+	    if(segment.equals("local")){
 		printerOutput.print(popTemplate1("LCL",index,false));
-	    }else if (segment.equals("argument")){
+	    }else if(segment.equals("argument")){
 		printerOutput.print(popTemplate1("ARG",index,false));
-	    }else if (segment.equals("this")){
+	    }else if(segment.equals("this")){
 		printerOutput.print(popTemplate1("THIS",index,false));
-	    }else if (segment.equals("that")){
+	    }else if(segment.equals("that")){
 		printerOutput.print(popTemplate1("THAT",index,false));
-	    }else if (segment.equals("temp")){
+	    }else if(segment.equals("temp")){
 		printerOutput.print(popTemplate1("R5", index + 5,false));
-	    }else if (segment.equals("pointer") && index == 0){
+	    }else if(segment.equals("pointer") && index ==0){
 		printerOutput.print(popTemplate1("THIS",index,true));
-	    }else if (segment.equals("pointer") && index == 1){
+	    }else if(segment.equals("pointer") && index ==1){
 		printerOutput.print(popTemplate1("THAT",index,true));
-	    }else if (segment.equals("static")){
-		printerOutput.print(popTemplate1(String.valueOf(16 + index),index,true));
+	    }else if(segment.equals("static")){
+		printerOutput.print(popTemplate1(String.valueOf(16 +index),index,true));
 	    }
 	}else {
 	    throw new IllegalArgumentException("Call pushPop() for a non-pushpop command");

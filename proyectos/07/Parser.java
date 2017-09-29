@@ -1,7 +1,7 @@
 import java.util.IllegalFormatException;
 import java.io.FileNotFoundException;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
+//import java.util.regex.Pattern;
+//import java.util.regex.Matcher;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
@@ -20,11 +20,11 @@ public class Parser{
     public Parser(File inputFile){
 	try{
 	    commands = new Scanner(inputFile);
-	    String line ="", codes ="";	    
+	    String lineCode ="", codes ="";	    
 	    while(commands.hasNext()){
-		line = comment(commands.nextLine()).trim();
-		if(line.length() > 0){
-		    codes +=line +"\n";
+		lineCode = comment(commands.nextLine()).trim();//Without whitespace
+		if(lineCode.length() > 0){
+		    codes +=lineCode +"\n";
 		}
 	    }
 	    commands = new Scanner(codes.trim());
@@ -46,62 +46,49 @@ public class Parser{
 	currentCmd = commands.nextLine();
 	argt1 ="";
 	argt2 =-1;
-	String[] segs =currentCmd.split(" ");
-	if(segs.length >3){
-	    throw new IllegalArgumentException("Too much arguments!");
+	String[] lineParts =currentCmd.split(" ");
+	if(lineParts.length >3){
+	    throw new IllegalArgumentException("Too much arguments");
 	}
-	if(arithmeticCmds.contains(segs[0])){
+	if(arithmeticCmds.contains(lineParts[0])){
 	    argType = ARITHMETIC;
-	}else {
-	    if(segs[0].equals("push")){
+	    argt1 = lineParts[0]; //Posible Error	    
+	}else{
+	    argt1 =lineParts[1];
+	    if(lineParts[0].equals("push")){
 		argType = PUSH;
-	    }else if(segs[0].equals("pop")){
+	    }else if(lineParts[0].equals("pop")){
 		argType = POP;
 	    }else{
-		throw new IllegalArgumentException("Unknown Command Type!");
+		System.out.println("Es -->> " + lineParts[0]);
+		throw new IllegalArgumentException("Unknown Command Type");
 	    }
-	    if(argType==PUSH || argType==POP){
+	    if(argType ==PUSH || argType ==POP){
 		try {
-		    argt2 = Integer.parseInt(segs[2]);
+		    argt2 = Integer.parseInt(lineParts[2]);
+		    System.out.println(lineParts[2] + " Parseado a entero ->> " + argt2);
 		}catch (Exception e){
-		    throw new IllegalArgumentException("Argument2 is not an integer!");
+		    throw new IllegalArgumentException("Argument2 is not an integer");
 		}
 	    }
 	}
     }
-    public int commandType(){
+    public int commandType(){ //XYZ
 	if(argType !=-1){
 	    return argType;
 	}else{
-	    throw new IllegalStateException("No command!");
+	    throw new IllegalStateException("No command");
 	}
     }
-    public String arg1(){	
+    public String arg1(){
+	System.out.println("Por aqui:: " + argt1);
 	return argt1;	
     }
     public int arg2(){
 	if (commandType() == PUSH || commandType() == POP){
 	    return argt2;
 	}else {
-	    throw new IllegalStateException("Can not get arg1");
-	}
-    }
-    public static String spaces(String strIn){
-	String result = "";
-	if (strIn.length() != 0){
-	    String[] segs = strIn.split(" ");
-	    for (String s: segs){
-		result += s;
-	    }
-	}
-	return result;
-    }
-    public static String getExt(String fileName){
-	int index = fileName.lastIndexOf('.');
-	if (index != -1){
-	    return fileName.substring(index);
-	}else {
-	    return "";
+	    throw new IllegalStateException("Can not get arg2");
 	}
     }
 }
