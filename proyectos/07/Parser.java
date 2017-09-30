@@ -1,7 +1,5 @@
 import java.util.IllegalFormatException;
 import java.io.FileNotFoundException;
-//import java.util.regex.Pattern;
-//import java.util.regex.Matcher;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
@@ -22,7 +20,7 @@ public class Parser{
 	    commands = new Scanner(inputFile);
 	    String lineCode ="", codes ="";	    
 	    while(commands.hasNext()){
-		lineCode = comment(commands.nextLine()).trim();//Without whitespace
+		lineCode = comment(commands.nextLine()).trim();
 		if(lineCode.length() > 0){
 		    codes +=lineCode +"\n";
 		}
@@ -52,7 +50,7 @@ public class Parser{
 	}
 	if(arithmeticCmds.contains(lineParts[0])){
 	    argType = ARITHMETIC;
-	    argt1 = lineParts[0]; //Posible Error	    
+	    argt1 = lineParts[0];
 	}else{
 	    argt1 =lineParts[1];
 	    if(lineParts[0].equals("push")){
@@ -60,35 +58,24 @@ public class Parser{
 	    }else if(lineParts[0].equals("pop")){
 		argType = POP;
 	    }else{
-		System.out.println("Es -->> " + lineParts[0]);
 		throw new IllegalArgumentException("Unknown Command Type");
 	    }
 	    if(argType ==PUSH || argType ==POP){
 		try {
-		    argt2 = Integer.parseInt(lineParts[2]);
-		    System.out.println(lineParts[2] + " Parseado a entero ->> " + argt2);
+		    argt2 = Integer.parseInt(lineParts[2]);		 
 		}catch (Exception e){
 		    throw new IllegalArgumentException("Argument2 is not an integer");
 		}
 	    }
 	}
     }
-    public int commandType(){ //XYZ
-	if(argType !=-1){
-	    return argType;
-	}else{
-	    throw new IllegalStateException("No command");
-	}
+    public int commandType(){
+	return argType;
     }
     public String arg1(){
-	System.out.println("Por aqui:: " + argt1);
 	return argt1;	
     }
     public int arg2(){
-	if (commandType() == PUSH || commandType() == POP){
-	    return argt2;
-	}else {
-	    throw new IllegalStateException("Can not get arg2");
-	}
+	return argt2;
     }
 }

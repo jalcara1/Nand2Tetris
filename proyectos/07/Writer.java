@@ -14,7 +14,6 @@ public class Writer{
 	}
     }
     public void arithmetic(String command){
-	System.out.println("-->> " + command);
 	if (command.equals("add")){
 	    printerOutput.print(arithmeticTemplate1() + "M=M+D\n");
 	}else if(command.equals("sub")){
@@ -37,12 +36,10 @@ public class Writer{
 	}else if(command.equals("neg")){
 	    printerOutput.print("D=0\n@SP\nA=M-1\nM=D-M\n");
 	}else{
-	    System.out.println("ERROR ERROR");
-	    throw new IllegalArgumentException("Call arithmetic() for a non-arithmetic command");
+	    throw new IllegalArgumentException("It is not an arithmetic command");
 	}
     }
     public void pushPop(int command, String segment, int index){
-	System.out.println(command+"--"+segment+"--"+index);
 	if(command ==Parser.PUSH){
 	    if(segment.equals("constant")){
 		printerOutput.print("@"+index+"\n"+"D=A\n@SP\nA=M\nM=D\n@SP\nM=M+1\n");
@@ -82,7 +79,7 @@ public class Writer{
 		printerOutput.print(popTemplate1(String.valueOf(16 +index),index,true));
 	    }
 	}else {
-	    throw new IllegalArgumentException("Call pushPop() for a non-pushpop command");
+	    throw new IllegalArgumentException("It is not a push or pop command");
 	}
     }
     public void close(){
@@ -92,13 +89,10 @@ public class Writer{
 	return "@SP\n"+"AM=M-1\n"+"D=M\n"+"A=A-1\n";
     }
     private String arithmeticTemplate2(String type){
-	return "@SP\n"+"AM=M-1\n"+"D=M\n"+"A=A-1\n"+
-	    "D=M-D\n"+"@FALSE"+jumpFlags+"\n"+
-	    "D;"+type+"\n"+"@SP\n"+"A=M-1\n"+
-	    "M=-1\n"+"@CONTINUE"+jumpFlags+"\n"+
-	    "0;JMP\n"+"(FALSE"+jumpFlags+")\n"+
-	    "@SP\n"+"A=M-1\n"+"M=0\n"+
-	    "(CONTINUE"+jumpFlags+")\n";
+	return "@SP\n"+"AM=M-1\n"+"D=M\n"+"A=A-1\n"+"D=M-D\n"+"@FALSE"+
+	    jumpFlags+"\n"+"D;"+type+"\n"+"@SP\n"+"A=M-1\n"+"M=-1\n"+
+	    "@CONTINUE"+jumpFlags+"\n"+"0;JMP\n"+"(FALSE"+jumpFlags+
+	    ")\n"+"@SP\n"+"A=M-1\n"+"M=0\n"+"(CONTINUE"+jumpFlags+")\n";
     }
     private String pushTemplate1(String segment, int index, boolean isDirect){
 	String noPointerCode =(isDirect)?"":"@"+index+"\n"+"A=D+A\nD=M\n";

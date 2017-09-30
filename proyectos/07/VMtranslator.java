@@ -8,7 +8,7 @@ public class VMtranslator{
 	    File file =new File(args[0]);
 	    File outputFile =new File(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(".")) + ".asm");
 	    Writer writer = new Writer(outputFile);
-	    Parser parser =new Parser(file); //Posible Problem file format
+	    Parser parser =new Parser(file);
 	    int type = -1;
 	    while(parser.moreCommands()){
 		parser.advance();
