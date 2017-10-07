@@ -1,10 +1,15 @@
 import java.io.FileNotFoundException;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import java.io.PrintWriter;
 import java.io.File;
 
 public class Writer{
     private PrintWriter printerOutput;
     private int jumpFlags;
+    private static final Pattern regexTag = Pattern.compile("^[^0-9][0-9A-Za-z\\_\\:\\.\\$]+");
+    private static int labelCnt = 0;
+    private static String fileName = "";	
     public Writer(File outputFile){
 	try{
 	    printerOutput =new PrintWriter(outputFile);
