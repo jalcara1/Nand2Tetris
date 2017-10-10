@@ -20,7 +20,7 @@ public class VMtranslator{
 		}else if (type ==Parser.LABEL){
 		    writer.label(parser.arg1());
 		}else if (type ==Parser.GOTO){
-		    writer.goto(parser.arg1());
+		    writer.Goto(parser.arg1());
 		}else if (type ==Parser.IF){
 		    writer.If(parser.arg1());
 		}else if (type ==Parser.RETURN){

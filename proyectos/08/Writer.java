@@ -12,7 +12,7 @@ public class Writer{
     private static String fileName = "";	
     public Writer(File outputFile){
 	try{
-	    fileName = fileOut.getName();
+	    fileName = outputFile.getName();
 	    printerOutput =new PrintWriter(outputFile);
 	    jumpFlags =0;
 	}catch(FileNotFoundException e){
@@ -89,7 +89,7 @@ public class Writer{
 	}
     }
     public void label(String tag){
-	Matcher M = labelReg.matcher(tag);
+	Matcher M = regexTag.matcher(tag);
 	if (M.find()){
 	    printerOutput.print("(" + tag +")\n");
 	}else{
@@ -97,7 +97,7 @@ public class Writer{
 	}
     }
     public void Goto(String tag){
-	Matcher M = labelReg.matcher(tag);
+	Matcher M = regexTag.matcher(tag);
 	if (M.find()){
 	    printerOutput.print("@" + tag +"\n0;JMP\n");
 	}else{
@@ -105,8 +105,8 @@ public class Writer{
 	}
     }
     public void If(String tag){
-	Matcher M = labelReg.matcher(tag);
-	if (m.find()){
+	Matcher M = regexTag.matcher(tag);
+	if(M.find()){
 	    printerOutput.print(arithmeticTemplate1() + "@" + tag +"\nD;JNE\n");
 	}else {
 	    throw new IllegalArgumentException("Wrong tag format");
@@ -126,8 +126,8 @@ public class Writer{
 			 "@" +functionName +"\n" +
 			 "0;JMP\n" +"(" +newTag + ")\n");
     }
-    public void writeReturn(){
-	outPrinter.print("@LCL\n" +"D=M\n" +"@R11\n" +
+    public void Return(){
+	printerOutput.print("@LCL\n" +"D=M\n" +"@R11\n" +
 			 "M=D\n" +"@5\n" +"A=D-A\n" +
 			 "D=M\n" +"@R12\n" +"M=D\n" +
 			 popTemplate1("ARG",0,false) +
@@ -137,10 +137,22 @@ public class Writer{
 			 preFrameTemplate("THIS") +
 			 preFrameTemplate("ARG") +
 			 preFrameTemplate("LCL") +
-			 "@R12\n" +"A=M\n" +"0;JMP\n";);
+			 "@R12\n" +"A=M\n" +"0;JMP\n");
+    }
+    public void function(String functionName, int numLocals){
+	printerOutput.print("(" + functionName +")\n");
+	for (int i = 0; i < numLocals; i++){
+	    pushPop(Parser.PUSH,"constant",0);
+	}
     }
     public void close(){
 	printerOutput.close();
+    }
+    public String preFrameTemplate(String pos){
+	        return "@R11\n" +"D=M-1\n" +"AM=D\n" +
+		       "D=M\n" +"@" + pos + "\n" +
+		       "M=D\n";
+
     }
     private String arithmeticTemplate1(){
 	return "@SP\n"+"AM=M-1\n"+"D=M\n"+"A=A-1\n";

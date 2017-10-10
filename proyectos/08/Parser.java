@@ -56,16 +56,17 @@ public class Parser{
 	    argt1 =lineParts[0];
 	}else if(lineParts[0].equals("return")){
 	    argType = RETURN;
-	    argument1 =segs[0];
+	    argt1 =lineParts[0];
 	}else{
 	    argt1 =lineParts[1];
+	    System.out.println("-->> " + lineParts[0]);
 	    if(lineParts[0].equals("push")){
 		argType =PUSH;
 	    }else if(lineParts[0].equals("pop")){
 		argType =POP;
 	    }else if(lineParts[0].equals("label")){
 		argType =LABEL;
-	    }else if(lineParts[0].equals("if")){
+	    }else if(lineParts[0].equals("if-goto")){
 		argType =IF;
 	    }else if(lineParts[0].equals("goto")){
 		argType =GOTO;
