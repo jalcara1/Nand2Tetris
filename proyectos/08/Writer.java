@@ -12,6 +12,7 @@ public class Writer{
     private static String fileName = "";	
     public Writer(File outputFile){
 	try{
+	    fileName = fileOut.getName();
 	    printerOutput =new PrintWriter(outputFile);
 	    jumpFlags =0;
 	}catch(FileNotFoundException e){
@@ -83,9 +84,60 @@ public class Writer{
 	    }else if(segment.equals("static")){
 		printerOutput.print(popTemplate1(String.valueOf(16 +index),index,true));
 	    }
-	}else {
+	}else{
 	    throw new IllegalArgumentException("It is not a push or pop command");
 	}
+    }
+    public void label(String tag){
+	Matcher M = labelReg.matcher(tag);
+	if (M.find()){
+	    printerOutput.print("(" + tag +")\n");
+	}else{
+	    throw new IllegalArgumentException("Wrong tag format");
+	}
+    }
+    public void Goto(String tag){
+	Matcher M = labelReg.matcher(tag);
+	if (M.find()){
+	    printerOutput.print("@" + tag +"\n0;JMP\n");
+	}else{
+	    throw new IllegalArgumentException("Wrong tag format");
+	}
+    }
+    public void If(String tag){
+	Matcher M = labelReg.matcher(tag);
+	if (m.find()){
+	    printerOutput.print(arithmeticTemplate1() + "@" + tag +"\nD;JNE\n");
+	}else {
+	    throw new IllegalArgumentException("Wrong tag format");
+	}
+    }
+    public void call(String functionName, int numArgs){
+	String newTag = "RETURN_LABEL" + (labelCnt++);
+	printerOutput.print("@" +newTag +"\n" +"D=A\n@SP\nA=M\nM=D\n@SP\nM=M+1\n");
+	printerOutput.print(pushTemplate1("LCL", 0, true));
+	printerOutput.print(pushTemplate1("ARG", 0, true));
+	printerOutput.print(pushTemplate1("THIS", 0, true));
+	printerOutput.print(pushTemplate1("THAT", 0, true));
+	printerOutput.print("@SP\n" +"D=M\n" +"@5\n" +"D=D-A\n" +
+			 "@" + numArgs +"\n" +"D=D-A\n" +
+			 "@ARG\n" +"M=D\n" +"@SP\n" +
+			 "D=M\n" +"@LCL\n" +"M=D\n" +
+			 "@" +functionName +"\n" +
+			 "0;JMP\n" +"(" +newTag + ")\n");
+    }
+    public void writeReturn(){
+	outPrinter.print("@LCL\n" +"D=M\n" +"@R11\n" +
+			 "M=D\n" +"@5\n" +"A=D-A\n" +
+			 "D=M\n" +"@R12\n" +"M=D\n" +
+			 popTemplate1("ARG",0,false) +
+			 "@ARG\n" +"D=M\n" +"@SP\n" +
+			 "M=D+1\n" +
+			 preFrameTemplate("THAT") +
+			 preFrameTemplate("THIS") +
+			 preFrameTemplate("ARG") +
+			 preFrameTemplate("LCL") +
+			 "@R12\n" +"A=M\n" +"0;JMP\n";);
     }
     public void close(){
 	printerOutput.close();
