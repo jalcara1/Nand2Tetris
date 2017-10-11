@@ -59,7 +59,6 @@ public class Parser{
 	    argt1 =lineParts[0];
 	}else{
 	    argt1 =lineParts[1];
-	    System.out.println("-->> " + lineParts[0]);
 	    if(lineParts[0].equals("push")){
 		argType =PUSH;
 	    }else if(lineParts[0].equals("pop")){
