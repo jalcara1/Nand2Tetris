@@ -1,0 +1,33 @@
+/** The Tower of Hanoi */
+class Main {
+    function void main() {
+	
+    }
+    constructor SquareGame new() {
+
+    }
+    function void empezar() {
+
+    }
+    function void resolver() {
+
+    }
+    function void dibujarTorres() {
+
+    }
+    function void totalDiscos() {
+
+    }
+    function void inicioX() {
+
+    }
+    function void inicioTD() {
+
+    }
+    function void dibujaDiscos() {
+
+    }
+    function void paintComponent() {
+
+    }
+}
