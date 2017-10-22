@@ -83,6 +83,7 @@ class Hanoi {
 	let numDiscosTorre2 = 0;
 	let numDiscosTorre3 = 0;
 	do Screen.clearScreen();//do repaint();
+	do paintComponent();
 	return this;
     }
     method void empezar() {
@@ -156,7 +157,10 @@ class Hanoi {
 		    let numXTorre3 = inicioX(temporal, 2);
 		}
 	    }
-	    do Output.printInt(inicio + fin); // (inicio + " -> " + fin);
+	    // do Output.printInt(inicio);
+	    // do Output.printString(" -> "); // (inicio + " -> " + fin)
+	    // do Output.printInt(fin);
+	    // do Output.println();
 	    do Sys.wait(100); //FALTA
 	    do Screen.clearScreen(); //do repaint();
 	} else {
@@ -219,7 +223,10 @@ class Hanoi {
 	    }
 	    do Sys.wait(1000); //FALTA
 	    do Screen.clearScreen(); //do repaint();
-	    do Output.printInt(inicio + fin); // (inicio + " -> " + fin)
+	    // do Output.printInt(inicio);
+	    // do Output.printString(" -> "); // (inicio + " -> " + fin)
+	    // do Output.printInt(fin);
+	    // do Output.println();	    
 	    do resolver(n - 1, auxiliar, inicio, fin, tamDisco);
 	}
 	return;
@@ -227,11 +234,11 @@ class Hanoi {
     method void dibujaTorres(){//Graphics2D g) { //FALTA
 	// g.setColor(Color.blue);
 	// Rectangle2D.Double torre1 = new Rectangle2D.Double(105,10,10,210);
-	do Screen.drawRectangle(105, 10, 10, 210);
+	do Screen.drawRectangle(85, 35, 95, 235);//(85, 35, 95, 235)
 	// Rectangle2D.Double torre2 = new Rectangle2D.Double(251,10,10,210);
-	do Screen.drawRectangle(251, 10, 10, 210);
+	do Screen.drawRectangle(235, 35, 245, 235);//(235, 35, 245, 235);
 	// Rectangle2D.Double torre3 = new Rectangle2D.Double(397,10,10,210);
-	do Screen.drawRectangle(397, 10, 10, 210);
+	do Screen.drawRectangle(395, 35, 405, 235);//(395, 35, 405, 235);
 	// g.fill(torre1);
 	// g.fill(torre2);
 	// g.fill(torre3);
@@ -323,13 +330,13 @@ class Hanoi {
 	do dibujaTorres();// dibujaTorres((Graphics2D) g);	
 	let numTotalDiscos = totalDiscos(0);
 	// dibujaDiscos((Graphics2D) g, 0, numTotalDiscos, numXTorre1, posDiscoy1, numTamTorre1);
-	do dibujaDiscos( 0, numTotalDiscos, numXTorre1, posDiscoy1, numTamTorre1);
+	//do dibujaDiscos( 0, numTotalDiscos, numXTorre1, posDiscoy1, numTamTorre1);
 	let numTotalDiscos = totalDiscos(1);
 	// dibujaDiscos((Graphics2D) g, 1, numTotalDiscos, numXTorre2, posDiscoy1, numTamTorre2);
-	do dibujaDiscos(1, numTotalDiscos, numXTorre2, posDiscoy1, numTamTorre2);
+	//do dibujaDiscos(1, numTotalDiscos, numXTorre2, posDiscoy1, numTamTorre2);
 	let numTotalDiscos = totalDiscos(2);
 	// dibujaDiscos((Graphics2D) g, 2, numTotalDiscos, numXTorre3, posDiscoy1, numTamTorre3);
-	do dibujaDiscos(2, numTotalDiscos, numXTorre3, posDiscoy1, numTamTorre3);
+	//do dibujaDiscos(2, numTotalDiscos, numXTorre3, posDiscoy1, numTamTorre3);
 	return;
     }//
 }

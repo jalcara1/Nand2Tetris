@@ -15,7 +15,9 @@ class Main{
 	    // frame.setTitle("Torres de Hanoi");
 	    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    // frame.setSize(512,256);
-	    do Screen.Pixel(512, 256);
+	    //do Screen.clearScreen();
+	    //do Output.printString("Torres de Hanoi");
+	    //do Output.println();
 	    // frame.setLocationRelativeTo(null);
 	    // frame.setVisible(true);
 	    do torresDeHanoi.empezar();
