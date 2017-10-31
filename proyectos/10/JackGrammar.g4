@@ -1,5 +1,5 @@
 //Define a grammar for Jack Language
-grammar Jack;
+grammar JackGrammar;
 //Lexical elements:
 //The Jack language include five types of terminal elements(tokens)
 keyword :   'class'|'constructor'|'function'|'method'|'field'|'static'
@@ -7,8 +7,8 @@ keyword :   'class'|'constructor'|'function'|'method'|'field'|'static'
     |'let'|'do'|'if'|'else'|'while'|'return' ;
 symbol  :   '{'|'}'|'('|')'|'['|']'|'.'|','|';'|'+'|'-'|'*'|'/'|'&'|'|'
     |'<'|'>'|'='|'~' ;
-integerConstant :   '0'|('1'..'9')('0'..'9')* ;
-StringConstant  :   '"'(~('"'|'\n'|'\r'))*'"'|'"' ~'"' '"' ;
+integerConstant :   '0';//|('1'..'9')('0'..'9')* ;
+stringConstant  :   '"'(~('"'|'\n'|'\r'))*'"'|'"' ~'"' '"' ;
 identifier  :   ;
 //Program structure:
 //A Jack Program is a collection of classes, each appearing in a separate file.
@@ -32,12 +32,13 @@ letStatement    :   'let' varName ('['expression']')?'='expression';' ;
 ifStatement :   'if' '(' expression ')' '{' statements '}' ('else''{'statements'}')? ;
 whileStatement  :   'while' '(' expression ')' '{' statements '}' ;
 doStatement :   'do' subroutineCall ';' ;
-ReturnStatement :   'return' expression? ';' ;
+returnStatement :   'return' expression?';' ;
 //Expressions:
 expression  :   term (op term)* ;
 term    :   integerConstant|stringConstant|keywordConstant|varName
     |varName '[' expression ']'|subroutineCall|'('expression')'|unaryOp term ;
 subroutineCall  :   subroutineName '(' expressionList ')'|(className|varName)'.'subroutineName'('expressionList')' ;
+expressionList  :   (expression(','expression)*)? ;
 op  :   '+'|'-'|'*'|'/'|'&'|'|'|'<'|'>'|'=' ;
 unaryOp :   '-'|'*' ;
-KeyworkConstant : 'true'|'false'|'null'|'this' ;
+keywordConstant : 'true'|'false'|'null'|'this' ;
