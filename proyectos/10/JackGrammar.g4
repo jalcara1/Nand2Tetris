@@ -7,7 +7,7 @@ keyword :   'class'|'constructor'|'function'|'method'|'field'|'static'
     |'let'|'do'|'if'|'else'|'while'|'return' ;
 symbol  :   '{'|'}'|'('|')'|'['|']'|'.'|','|';'|'+'|'-'|'*'|'/'|'&'|'|'
     |'<'|'>'|'='|'~' ;
-integerConstant :   '0';//|('1'..'9')('0'..'9')* ;
+integerConstant :   [0-9]+ ;//'0'('1'..'9')('0'..'9')* ;
 stringConstant  :   '"'(~('"'|'\n'|'\r'))*'"'|'"' ~'"' '"' ;
 identifier  :   ;
 //Program structure:
