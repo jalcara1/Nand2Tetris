@@ -1,0 +1,12 @@
+class Main{
+	
+	function void main(){
+		var Matriz matrizA;
+		var Matriz matrizB;
+
+		let matrizA = Matriz.new(6,6);
+		let matrizB = Matriz.new(6,3);
+		
+		return;
+	}
+}

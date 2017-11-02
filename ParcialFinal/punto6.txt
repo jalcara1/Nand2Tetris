@@ -1,0 +1,6 @@
+-Ventajas
+*El tiempo que se demora el programa para empezar a ejecutarce en la maquina local es inferior
+*Se pueden desarrollar programas muy eficientes y especificos, con un conocimiento detallado de la arquitectura del computador, 
+-Desventajas
+*No se pueden ejecutar los codigos en cualquier maquina, depende de la arquitectura y del sistema operativo, por lo que no tiene funcionalidad interplataforma
+*No se puede ejecutar el codigo si no ha sido traducido a la arquitectura donde sera corrido

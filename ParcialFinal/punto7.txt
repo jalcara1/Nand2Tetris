@@ -1,0 +1,5 @@
+-Espacios de memoria
+*Stack-> El Stack se usa para hacer operaciones(Suma, resta, and or, neg, etc), de una arquitectura LIFO. Ademas permite controlar los contextos privados de cada una de las funciones controlando los punteros directos al Stack.
+*Local->  Guarda las variables locales de las funciones. Almacena dinamicamente por la implementacion de la VM y son inicializados en cero cuando la funcion es ingresada.
+*Args->  Guarda los argumentos de las funciones. Almacena dinamicamente por la implementacion de la VM cunado la funcion es ingresada.
+*Heap-> En el Heap se almacenan todos los objetos, sin embargo, solo se almacena de ellos los atributos establecidos como "field". Llegar a estos objetos se hace facil desde la Stack usando los pauntadores de cada objeto, hacia su lugar correspondiente en el Heap.

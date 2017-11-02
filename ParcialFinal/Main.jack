@@ -1,0 +1,8 @@
+class Main{	
+    function void main(){
+	var punto9 Punto9;
+	let Punto9 = punto9.new();
+	do Punto9.empezar();
+	return;
+    }
+}

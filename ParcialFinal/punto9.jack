@@ -1,0 +1,9 @@
+class punto9 {
+    constructor punto9 new(){
+	return this;
+    }
+    method void empezar() {
+	do Screen.drawLine(105, 50, 115, 210);
+	do Screen.drawRectangle(105, 50, 115, 210);	
+    }
+}

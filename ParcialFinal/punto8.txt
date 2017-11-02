@@ -1,0 +1,5 @@
+Cuando un objeto ya no se necesita en un programa, se puede eliminar. En particular,
+los objetos se pueden desasignar de la memoria y recuperar su espacio utilizandola
+función "Memory.deAlloc(objeto)" de la biblioteca estándar. Llamadas de convenciones
+para que cada clase contenga un método "dispose()" que encapsule adecuadamente esta
+asignación

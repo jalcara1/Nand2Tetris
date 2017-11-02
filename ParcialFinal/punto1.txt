@@ -1,0 +1,5 @@
+-Registros
+*LCL: filas, columnas, arreglo, tamagno
+*ARG:
+*THIS: matrizA
+*THAT: main
