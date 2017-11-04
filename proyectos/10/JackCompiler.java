@@ -12,10 +12,10 @@ public class JackCompiler{
      * of the available methods.
      */ // Generated from JackGrammar.g4 by ANTLR 4.7
     public static class JackGrammarBaseListener implements JackGrammarListener {
-	public void enterClasss(JackGrammarParser.ClasssContext ctx) {  }
-	public void exitClasss(JackGrammarParser.ClasssContext ctx) {  }
-	public void enterClassVarDec(JackGrammarParser.ClassVarDecContext ctx) {  }
-	public void exitClassVarDec(JackGrammarParser.ClassVarDecContext ctx) {  }
+	public void enterClasss(JackGrammarParser.ClasssContext ctx) { }
+	public void exitClasss(JackGrammarParser.ClasssContext ctx) { }
+	public void enterClassVarDec(JackGrammarParser.ClassVarDecContext ctx) { }
+	public void exitClassVarDec(JackGrammarParser.ClassVarDecContext ctx) { }
 	public void enterType(JackGrammarParser.TypeContext ctx) {  }
 	public void exitType(JackGrammarParser.TypeContext ctx) {  }
 	public void enterSubroutineDec(JackGrammarParser.SubroutineDecContext ctx) {  }
@@ -24,8 +24,11 @@ public class JackCompiler{
 	public void exitParameterList(JackGrammarParser.ParameterListContext ctx) {  }
 	public void enterSubroutineBody(JackGrammarParser.SubroutineBodyContext ctx) {  }
 	public void exitSubroutineBody(JackGrammarParser.SubroutineBodyContext ctx) {  }
-	public void enterVarDec(JackGrammarParser.VarDecContext ctx) {  }
-	public void exitVarDec(JackGrammarParser.VarDecContext ctx) {  }
+	public void enterVarDec(JackGrammarParser.VarDecContext ctx) {
+	    //System.out.println("enterVarDec - " + ctx.getText() + " ::-=>  " + ctx.getChildCount());
+	    //System.out.println("»» " + ctx.getChild(0) + " $ " + ctx.getChild(1) + " # " + ctx.getChild(2));
+	}
+	public void exitVarDec(JackGrammarParser.VarDecContext ctx) { }
 	public void enterClassName(JackGrammarParser.ClassNameContext ctx) {  }
 	public void exitClassName(JackGrammarParser.ClassNameContext ctx) {  }
 	public void enterSubroutineName(JackGrammarParser.SubroutineNameContext ctx) {  }
@@ -36,8 +39,8 @@ public class JackCompiler{
 	public void exitStatements(JackGrammarParser.StatementsContext ctx) {  }
 	public void enterStatement(JackGrammarParser.StatementContext ctx) {  }
 	public void exitStatement(JackGrammarParser.StatementContext ctx) {  }
-	public void enterLetStatement(JackGrammarParser.LetStatementContext ctx) {  }
-	public void exitLetStatement(JackGrammarParser.LetStatementContext ctx) {  }
+	public void enterLetStatement(JackGrammarParser.LetStatementContext ctx) { }
+	public void exitLetStatement(JackGrammarParser.LetStatementContext ctx) { }
 	public void enterIfStatement(JackGrammarParser.IfStatementContext ctx) {  }
 	public void exitIfStatement(JackGrammarParser.IfStatementContext ctx) {  }
 	public void enterWhileStatement(JackGrammarParser.WhileStatementContext ctx) {  }
@@ -61,26 +64,47 @@ public class JackCompiler{
 	public void enterKeywordConstant(JackGrammarParser.KeywordConstantContext ctx) {  }
 	public void exitKeywordConstant(JackGrammarParser.KeywordConstantContext ctx) {  }
 
-	public void enterEveryRule(ParserRuleContext ctx) {  }
-	public void exitEveryRule(ParserRuleContext ctx) { }
-	public void visitTerminal(TerminalNode node) { }
-	public void visitErrorNode(ErrorNode node) { }
-    }
-    public static void main(String[] args) {
-	try {
-	    ANTLRInputStream input = new ANTLRInputStream( new FileInputStream(args[0]));
-
-	    JackGrammarLexer lexer = new JackGrammarLexer(input);
-	    JackGrammarParser parser = new JackGrammarParser(new CommonTokenStream(lexer));
-
-	    parser.setBuildParseTree(true);
-	    ParseTree tree = parser.classs();
-
-	    ParseTreeWalker walker = new ParseTreeWalker();
-	    walker.walk(new JackGrammarBaseListener(), tree);
-	   
-	} catch (IOException e) {
-	    e.printStackTrace();
+	public void enterEveryRule(ParserRuleContext ctx) { }//System.out.println("enterEveryRule ::-=>  " + ctx.getText()+ "\n");}
+	public void exitEveryRule(ParserRuleContext ctx) { }//System.out.println("exitEveryRule ::-=>  " + ctx.getText()+ "\n");}
+	public void visitTerminal(TerminalNode node) {	    
+	    String child = node.getText();
+	    if(child.equals("class")|| child.equals("constructor")|| child.equals("function")|| child.equals("method")|| child.equals("field")|| child.equals("static")
+	       || child.equals("var")|| child.equals("int")|| child.equals("char")|| child.equals("boolean")|| child.equals("void")|| child.equals("true")
+	       || child.equals("false")|| child.equals("null")|| child.equals("this")|| child.equals("let")|| child.equals("do")|| child.equals("if")
+	       || child.equals("else")|| child.equals("while")|| child.equals("return")){
+		System.out.println("<keyword> " + child + " </keyword>");
+	    }else if(child.equals("{")|| child.equals("}")|| child.equals("(")|| child.equals(")")|| child.equals("[")|| child.equals("]")|| child.equals(".")
+		     || child.equals(",")|| child.equals(";")|| child.equals("+")|| child.equals("-")|| child.equals("*")|| child.equals("/")|| child.equals("&")
+		     || child.equals("|")|| child.equals("|") || child.equals("<")|| child.equals(">")|| child.equals("~")|| child.equals("=")){
+		System.out.println("<symbol> " + child + " </symbol>");
+	    }else if(isInteger(child)){
+		System.out.println("<integerConstant> " + child + " </integerConstant>");
+	    }else if(child.charAt(0) == '"'){
+		System.out.println("<stringConstant> " + child.substring(1, child.length()-1) + " </stringConstant>");
+	    }else{
+		System.out.println("<identifier> " + child + " </identifier>");
+	    }
 	}
+	public void visitErrorNode(ErrorNode node) { }//System.out.println("visitErrorNode ::-=>  "+ node.getText()+ "\n");}
+	public boolean isInteger(String numero){
+	    try{
+		Integer.parseInt(numero);
+		return true;
+	    }catch(NumberFormatException e){
+		return false;
+	    }
+	}
+    }
+    public static void main(String[] args) throws Exception {
+	//System.out.println("-> " + args[0]);
+	System.out.println("<tokens>");
+	JackGrammarLexer lexer = new JackGrammarLexer( new ANTLRFileStream( args[0] ));
+	CommonTokenStream tokens = new CommonTokenStream( lexer );
+	JackGrammarParser parser = new JackGrammarParser( tokens );
+
+	ParseTree tree = parser.classs();
+	ParseTreeWalker walker = new ParseTreeWalker();
+	walker.walk(new JackGrammarBaseListener(), tree);
+	System.out.println("</tokens>");	
     }
 }
