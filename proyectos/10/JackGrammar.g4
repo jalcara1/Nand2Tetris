@@ -7,14 +7,14 @@ KEYWORD :   'class'|'constructor'|'function'|'method'|'field'|'static'
     |'let'|'do'|'if'|'else'|'while'|'return' ;
 SYMBOL  :   '{'|'}'|'('|')'|'['|']'|'.'|','|';'|'+'|'-'|'*'|'/'|'&'|'|'
     |'<'|'>'|'='|'~' ;
-INTEGERCONSTANT : '0' | ('1'..'9')('0'..'9')* ; //Lexical Elements In Uppercase
-STRINGCONSTANT  :   '"'(~('"'|'\n'|'\r'))*'"'|'"' ~'"' '"' ;
-IDENTIFIER  :   ([a-zA-Z][a-zA-Z0-9_]*) ;
+INTEGER : '0' | ('1'..'9')('0'..'9')* ; //Lexical Elements In Uppercase
+STRING  :   '"'(~('"'|'\n'|'\r'))*'"'|'"' ~'"' '"' ;
+ID  :   ([a-zA-Z][a-zA-Z0-9_]*) ;
 //Program structure:
 //A Jack Program is a collection of classes, each appearing in a separate file.
 //The compilation unit is a class. A class is a sequence of tokens strucured
 //according to the following context free syntax:
-classs   :   'class' className '{' classVarDec* subroutineDec* '}' ;
+clazz   :   'class' className '{' classVarDec* subroutineDec* '}' ;
 classVarDec :   ('static'|'field') type varName (','varName)* ';' ;
 type    :   'int'|'char'|'boolean'|className ;
 subroutineDec   :   ('constructor'|'function'|'method') ('void'|type) subroutineName
@@ -22,9 +22,9 @@ subroutineDec   :   ('constructor'|'function'|'method') ('void'|type) subroutine
 parameterList   :   ((type varName)(','type varName)*)? ;
 subroutineBody  :   '{'varDec* statements'}' ;
 varDec  :   'var' type varName (',' varName)* ';' ;
-className   : IDENTIFIER ;
-subroutineName  : IDENTIFIER ;
-varName :IDENTIFIER ;
+className   : ID ;
+subroutineName  : ID ;
+varName :ID ;
 //Statements:
 statements  :   statement* ;
 statement  :   letStatement|ifStatement|whileStatement|doStatement|returnStatement ;
@@ -35,14 +35,14 @@ doStatement :   'do' subroutineCall ';' ;
 returnStatement :   'return' expression?';' ;
 //Expressions:
 expression  :   term (op term)* ;
-term    :   INTEGERCONSTANT|STRINGCONSTANT|keywordConstant|varName
+term    :   INTEGER|STRING|keywordConstant|varName
     |varName '[' expression ']'|subroutineCall|'('expression')'|unaryOp term ;
 subroutineCall  :   subroutineName '(' expressionList ')'|(className|varName)'.'subroutineName'('expressionList')' ;
 expressionList  :   (expression(','expression)*)? ;
 op  :   '+'|'-'|'*'|'/'|'&'|'|'|'<'|'>'|'=' ;
-unaryOp :   '-'|'*' ;
+unaryOp :   '-'|'~' ;
 keywordConstant : 'true'|'false'|'null'|'this' ;
 WS  :   (' '|'\t'|'\r'|'\n'|'\f') -> skip ;
-COMMENT    :   ('//' ~( '\r' | '\n' )*) -> skip ;
-COMMENTS    :   ('/*' .*? '*/') -> skip ;
-COMMENTSS    :   ('/**' .*? '*/') -> skip ;
+LINE_COMMENT    :   ('//' ~( '\r' | '\n' )*) -> skip ;
+COMMENT    :   ('/*' .*? '*/') -> skip ;
+PARAGRAPH_COMMENTS    :   ('/**' .*? '*/') -> skip ;
