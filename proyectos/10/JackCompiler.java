@@ -1,13 +1,19 @@
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.*;
+import java.io.*;
 
 import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.*;
 
-import java.util.Stack;
+import javax.xml.transform.stream.*;
+import javax.xml.transform.dom.*;
+import org.xml.sax.InputSource;
+import javax.xml.transform.*;
+import javax.xml.parsers.*;
+import javax.xml.xpath.*;
+import org.w3c.dom.*;
+import java.net.*;
 
+//XPath, XPathConstants, XPathExpressionException, XPathFactory;
 public class JackCompiler{
     /** 
      * This class provides an empty implementation of JackGrammarListener,
@@ -84,7 +90,14 @@ public class JackCompiler{
 		outputT += indent() + "<keyword> " + child + " </keyword>\n";
 	    }else if(child.equals("{")|| child.equals("}")|| child.equals("(")|| child.equals(")")|| child.equals("[")|| child.equals("]")|| child.equals(".")
 	    	     || child.equals(",")|| child.equals(";")|| child.equals("+")|| child.equals("-")|| child.equals("*")|| child.equals("/")|| child.equals("&")
-	    	     || child.equals("|")|| child.equals("|") || child.equals("<")|| child.equals(">\n")|| child.equals("~")|| child.equals("=")){
+	    	     || child.equals("|")|| child.equals("|") || child.equals("<")|| child.equals(">")|| child.equals("~")|| child.equals("=")){
+		if(child.equals("<")){
+		    child = "&lt;";
+		}else if(child.equals(">")){
+		    child = "&gt";
+		}else if(child.equals("&")){
+		    child = "&amp";
+		}
 	    	output += indent() + "<symbol> " + child + " </symbol>\n";
 		outputT += indent() + "<symbol> " + child + " </symbol>\n";
 	    }else if(isInteger(child)){
@@ -120,7 +133,34 @@ public class JackCompiler{
 	//String output = "<tokens>\n" + getOutput() + "</tokens>" ;
 	String output = Listener.getOutput();
 	String outputT = Listener.getOutputT();
-	System.out.println(output);
-	System.out.println("<tokens>\n" + outputT + "</tokens>");
+	//System.out.println(output);
+	//System.out.println(new JackCompiler().XML(output));
+	//System.out.println(new JackCompiler().XML("<root> <name>Coco Puff</name> <total>10</total> </root>"));
+	//System.out.println("<tokens>\n" + outputT + "</tokens>");
+	BufferedWriter writer = new BufferedWriter(new FileWriter(args[0].replaceAll(".jack", ".xml")));
+	BufferedWriter writerT = new BufferedWriter(new FileWriter(args[0].replaceAll(".jack", "T.xml")));
+	writer.write(new JackCompiler().XML(output));
+	writerT.write("<tokens>\n" + outputT + "</tokens>");     
+	writer.close();
+	writerT.close();
+    }
+    public String XML(String XML) throws Exception {	
+	Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new ByteArrayInputStream(XML.getBytes("utf-8"))));
+	XPath xPath = XPathFactory.newInstance().newXPath();
+	NodeList nodeList = (NodeList) xPath.evaluate("//text()[normalize-space()='']",document,XPathConstants.NODESET);
+	for (int i = 0; i < nodeList.getLength(); ++i) {
+	    Node node = nodeList.item(i);
+	    node.getParentNode().removeChild(node);
+	}
+	Transformer transformer = TransformerFactory.newInstance().newTransformer();
+	transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+	transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+	transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+	transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+	StringWriter stringWriter = new StringWriter();
+	StreamResult streamResult = new StreamResult(stringWriter);
+	transformer.transform(new DOMSource(document), streamResult);	    
+	//System.out.println(stringWriter.toString());	          
+	return stringWriter.toString();
     }
 }
