@@ -189,6 +189,7 @@ public class JackCompiler{
 	    writerT.write("<tokens>\n" + outputT + "</tokens>");     
 	    writer.close();
 	    writerT.close();
+	    
 	}
     }
 }
